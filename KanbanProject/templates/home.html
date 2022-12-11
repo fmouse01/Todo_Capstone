@@ -1,0 +1,93 @@
+
+
+{% extends "base.html" %}
+{% block content %}
+
+
+{% if user.is_authenticated %}
+    {% comment %} <h1 id='home'>Home</h1> {% endcomment %}
+    <form action={% url 'KanbanApp:add_new_todo' %} method="post">
+        <h1>Add an item to your list.</h1>
+    <div>
+        {% csrf_token %}
+        <input type="text" name="item" placeholder="item">
+        <button type="submit">submit</buton>
+    </div>
+    </form>
+
+
+    <main id='main'>
+        <div id='bin'>
+            <div class='bin-title'>
+                <h1>Not Completed</h1>
+            </div>
+            <div>
+                {% for todo in all_todos %}
+                {% if todo.completed is False and todo.in_progress is False %}
+                <div id='nc_card'>
+                            <div class='nc_title'>
+                                <h1> </h1>
+                            </div>
+                                <ul> {{ todo.item }}</ul>
+                                <ul><a href="{% url 'KanbanApp:progress' todo.id %}">In Progress</a></ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+            
+            
+            
+        <div id='bin'>
+            <div class='bin-title'>
+                <h1>In Progress</h1>
+            </div>
+            <div>
+                {% for todo in all_todos %}
+                    {% if todo.completed is False and todo.in_progress is True %}
+                        <div id='p_card'>
+                            <div id='p_title'>
+                                <h1> </h1>
+                            </div>
+                                <ul> {{ todo.item }}</ul>
+                                <ul><a href="{% url 'KanbanApp:progress' todo.id %}">In Progress</a></ul>
+                                <ul><a href="{% url 'KanbanApp:complete' todo.id %}">Complete</a></ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+
+            
+        <div id='bin'>
+            <div class='bin-title'>
+                <h1>Completed</h1>
+            </div>
+            <div>
+                {% for todo in all_todos %}
+                    {% if todo.completed is True %}
+                        <div id='c_card'>
+                            <div id='c_title'>
+                                <h1> </h1>
+                            </div>
+                                <ul> {{ todo.item }}</ul>
+                                <ul><a href="{% url 'KanbanApp:complete' todo.id %}">Complete</a></ul>
+                                <ul><a href="{% url 'KanbanApp:delete_item' todo.id %}">Delete</a></ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>  
+        
+        
+    </main>
+
+{% else %}
+<div id='title-hi'>
+    <h1 >Kanban!</h1>
+</div>
+{% endif %}     
+
+{% endblock %}
+        

@@ -1,0 +1,50 @@
+
+
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">  
+        
+        
+        <title>Kanban</title>
+        
+    </head>
+    <body>
+        
+        <div id='app'>
+            {% comment %} <h1>Base</h1> {% endcomment %}
+
+   
+            <nav id=''>
+                {% if user.is_authenticated %}
+                    <div class='primary'>
+                        <a href="{% url 'users:profile' user.username %}">{{user.username}}</a>
+                        <br/>
+                        <a href="{% url 'logout' %}">Logout</a>
+                    </div>
+                {% else %}
+                    <div id='log_info'>
+                        <a href="{% url 'login' %}">Login</a>
+                        <br/>
+                        <a href="{% url 'users:signup' %} ">Register</a>
+                    </div>
+                {% endif %}
+            </nav>
+
+            {% block content %}
+            {% endblock %}
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="{% static 'javascript/main.js' %}"></script>
+        <script>
+            const mountedApp = app.mount('#app')
+        </script>
+    </body>
+    </html
